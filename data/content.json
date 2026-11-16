@@ -1,0 +1,177 @@
+{
+  "site": {
+    "name": "Adrian-Mihai Aprofirei",
+    "title": "Adrian-Mihai Aprofirei · AI assistants and automation in production",
+    "description": "Computer science graduate in Iași, Romania. I build AI assistants and automation pipelines that run in production: a Messenger assistant serving 43 Facebook Pages, an AI receptionist, and video pipelines.",
+    "url": "",
+    "location": "Iași, Romania",
+    "positioning": "I build AI assistants and automation pipelines that run in production.",
+    "proofLabel": "Messenger AI assistant, in production",
+    "proof": "My Messenger assistant serves **43 Facebook Pages** from a single webhook and handles **14,100 executions an hour** at peak. It has held conversations with **4,394 people**, **46,822 messages** in all, and it runs on one server with **2 vCPU and 3.7 GiB** of memory."
+  },
+
+  "cases": [
+    {
+      "id": "messenger",
+      "layout": "lead",
+      "kicker": "In production",
+      "title": "Messenger AI assistant",
+      "dek": "A multi-tenant conversation assistant for Facebook Pages, built on n8n with Redis and PostgreSQL.",
+      "problem": "People send several messages in a burst. Most webhook deliveries are receipts and echoes, not messages. And Meta retries the delivery if the acknowledgement is slow.",
+      "built": "Acknowledge first, and drop the noise cheaply. One database statement elects a “leader” per sender; the leader waits 25 seconds, then answers the whole burst in one reply. The reply comes from an AI agent with conversation memory. Scheduled follow-ups run with error logging: 2,680 delivered.",
+      "stack": "n8n, Redis, PostgreSQL",
+      "repo": "https://github.com/adrianaprofirei/Messenger-Chatbot",
+      "note": "The public repository is a structure-only export and is not runnable.",
+      "table": {
+        "caption": "The system in numbers",
+        "rows": [
+          ["Facebook Pages", "43"],
+          ["Languages", "3"],
+          ["Executions per hour, off-peak", "~8,200"],
+          ["Executions per hour, peak", "14,100"],
+          ["People in conversation", "4,394"],
+          ["Messages", "46,822"],
+          ["Scheduled follow-ups delivered", "2,680"],
+          ["Server", "2 vCPU, 3.7 GiB"]
+        ]
+      },
+      "flow": {
+        "direction": "row",
+        "caption": "One webhook delivery, left to right. Receipts and echoes leave at the first check; everything else is acknowledged before any work is done.",
+        "nodes": [
+          { "label": "Webhook" },
+          { "label": "Has text?", "shape": "decision", "out": "yes",
+            "branch": { "edge": "no", "label": "Dropped events", "sub": "receipts, echoes" } },
+          { "label": "Ack" },
+          { "label": "Page config" },
+          { "label": "Buffer and claim" },
+          { "label": "25 s window" },
+          { "label": "AI agent" },
+          { "label": "Send reply" }
+        ]
+      },
+      "media": []
+    },
+
+    {
+      "id": "clinic",
+      "layout": "split",
+      "kicker": "Demo",
+      "aside": "Demo. The clinic in it is fictional.",
+      "title": "Clinic AI receptionist",
+      "dek": "Answers questions, checks real availability and books appointments in chat. The booking appears live on the reception dashboard about 50 ms later.",
+      "problem": "A patient should be able to ask a question, see real availability and book, all in one chat, and reception should see the booking straight away.",
+      "built": [
+        "The model can only act through **4 tools**, each validated on the server.",
+        "Double booking is impossible, by a database constraint.",
+        "Phone numbers never reach the model.",
+        "A booking reaches the dashboard in about **50 ms**.",
+        "**168** automated tests."
+      ],
+      "stack": "Python, FastAPI, SQLite, OpenAI tool calling, Docker, nginx",
+      "repo": "https://github.com/adrianaprofirei/clinic-ai-receptionist",
+      "flow": {
+        "direction": "column",
+        "caption": "The model sits between the chat and the data, and can reach it only through the four tools.",
+        "nodes": [
+          { "label": "Patient, in chat" },
+          { "label": "Model", "sub": "OpenAI tool calling" },
+          { "label": "4 server-validated tools" },
+          { "label": "SQLite", "sub": "one booking per slot", "out": "about 50 ms" },
+          { "label": "Reception dashboard" }
+        ]
+      },
+      "media": [
+        { "slot": "wide", "kind": "video", "src": "media/clinic-demo.mp4", "poster": "media/clinic-demo-poster.webp", "w": 1052, "h": 572,
+          "alt": "A visitor books an appointment in the chat on the left; the booking appears on the reception dashboard on the right.",
+          "caption": "Booking in chat, and the same booking on the reception dashboard about 50 ms later. Demo mode, fictional clinic." },
+        { "slot": "left", "kind": "image", "src": "media/clinic-chat.webp", "w": 1280, "h": 902,
+          "alt": "Chat in AI mode: free-slot buttons, a booking summary card and a confirmation card.",
+          "caption": "The chat: free times as buttons, a summary to confirm, then the confirmation." },
+        { "slot": "right", "kind": "image", "src": "media/clinic-admin.webp", "w": 1280, "h": 960,
+          "alt": "Reception week view with a newly booked appointment highlighted and a toast notification.",
+          "caption": "The reception dashboard right after a chat booking." }
+      ]
+    },
+
+    {
+      "id": "storyforge",
+      "layout": "media-first",
+      "kicker": "Video pipeline",
+      "title": "StoryForge",
+      "dek": "A pipeline that turns a story idea into vertical animated shorts rendered in Blender, 45–90 seconds per part.",
+      "problem": "A story idea has to become a finished, rendered vertical video, part after part, without redoing work every time one step changes.",
+      "built": "**17 cached stages** take the idea from screenplay to final video. **12 automatic quality gates** run before the final render. The pipeline has **78 tests**.",
+      "stack": "Python, FastAPI, Blender, ffmpeg, React",
+      "repo": "https://github.com/adrianaprofirei/storyforge",
+      "flow": {
+        "direction": "row",
+        "caption": "From story idea to finished part.",
+        "nodes": [
+          { "label": "Story idea" },
+          { "label": "17 cached stages", "sub": "screenplay to final video" },
+          { "label": "12 automatic quality gates" },
+          { "label": "Final render", "sub": "Blender, ffmpeg" },
+          { "label": "Vertical shorts", "sub": "45–90 s per part" }
+        ]
+      },
+      "media": [
+        { "slot": "tall-1", "kind": "video", "src": "media/storyforge-demo.mp4", "poster": "media/storyforge-demo-poster.webp", "w": 270, "h": 480,
+          "alt": "Proxy preview of the first seconds of part 1 of the bundled sample series.",
+          "caption": "Proxy preview of part 1 of the sample series." },
+        { "slot": "tall-2", "kind": "image", "src": "media/storyforge-final.webp", "w": 540, "h": 960,
+          "alt": "A final-quality Cycles still of a blocky original character.",
+          "caption": "A frame from the final preset (Cycles, 1080×1920)." },
+        { "slot": "strip", "kind": "image", "src": "media/storyforge-stills.webp", "w": 1620, "h": 480,
+          "alt": "Storyboard stills of part 1, one per automatically designed shot.",
+          "caption": "Storyboard of part 1: one still per automatically designed shot." }
+      ]
+    }
+  ],
+
+  "smaller": [
+    {
+      "title": "Reel Studio",
+      "summary": "Web app that generates short vertical videos with Google’s Veo and Gemini models and burns in word-by-word karaoke captions.",
+      "stack": "Python, FastAPI, n8n, ffmpeg, Whisper, Google Veo and Gemini",
+      "links": [ { "label": "adrianaprofirei/reel-studio", "href": "https://github.com/adrianaprofirei/reel-studio" } ]
+    },
+    {
+      "title": "Shorts Factory",
+      "summary": "Command-line pipeline taking an animated short from idea to script, voice-over, audio mix and captioned final video.",
+      "stack": "Python, Claude API, ElevenLabs, ffmpeg",
+      "links": [ { "label": "adrianaprofirei/shorts-factory", "href": "https://github.com/adrianaprofirei/shorts-factory" } ]
+    },
+    {
+      "title": "University Campus Access Control",
+      "summary": "Bachelor’s project: a Java Card smart-card access system with a Java terminal and PostgreSQL.",
+      "stack": "Java Card, Java, PostgreSQL",
+      "links": [
+        { "label": "adrianaprofirei/Bachelor-s-degree-project", "href": "https://github.com/adrianaprofirei/Bachelor-s-degree-project" },
+        { "label": "Video demo", "href": "https://www.youtube.com/watch?v=_bvCfoz5qyo" }
+      ]
+    }
+  ],
+
+  "about": [
+    "I studied computer science at the Faculty of Computer Science in Iași (BSc, 2024). Since then I’ve been building automation on my own: AI assistants and content pipelines that run in production, on infrastructure I set up and maintain myself.",
+    "I like understanding how a whole system fits together, and I judge what I build by its numbers: messages answered, bookings made, hours saved. I speak Romanian, English and French."
+  ],
+
+  "stack": [
+    ["Automation", "n8n, queues, webhooks"],
+    ["AI", "LLM tool calling, prompt design, speech and video models"],
+    ["Backend", "Python, FastAPI, Java, SQL, PostgreSQL, Redis"],
+    ["Infrastructure", "Docker, Linux, nginx, Bash, Git"]
+  ],
+
+  "contact": {
+    "email": "aprofireiadrianmihai1@gmail.com",
+    "rows": [
+      { "label": "LinkedIn", "text": "linkedin.com/in/adrian-mihai-aprofirei-75aa511bb", "href": "https://www.linkedin.com/in/adrian-mihai-aprofirei-75aa511bb/" },
+      { "label": "GitHub", "text": "github.com/adrianaprofirei", "href": "https://github.com/adrianaprofirei" },
+      { "label": "CV", "text": "Download CV (PDF)", "href": "cv.pdf", "download": true }
+    ],
+    "cv": "cv.pdf"
+  }
+}
