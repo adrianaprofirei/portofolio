@@ -2,12 +2,12 @@
   "site": {
     "name": "Adrian-Mihai Aprofirei",
     "title": "Adrian-Mihai Aprofirei · AI assistants and automation in production",
-    "description": "Computer science graduate in Iași, Romania. I build AI assistants and automation pipelines that run in production: a Messenger assistant serving 43 Facebook Pages, an AI receptionist, and video pipelines.",
+    "description": "Computer science graduate in Iași, Romania. I build AI assistants and automation pipelines that run in production: a Messenger assistant serving 98 Facebook Pages, an AI receptionist, and video pipelines.",
     "url": "https://adrian-aprofirei.vercel.app",
     "location": "Iași, Romania",
     "positioning": "I build AI assistants and automation pipelines that run in production.",
     "proofLabel": "Messenger AI assistant, in production",
-    "proof": "My Messenger assistant serves **43 Facebook Pages** from a single webhook and handles **14,100 executions an hour** at peak. It has held conversations with **4,394 people**, **46,822 messages** in all."
+    "proof": "My Messenger assistant serves **98 Facebook Pages** from a single webhook and handles **14,100 executions an hour** at peak. It has held conversations with **22,305 people**, **218,466 messages** in all."
   },
 
   "cases": [
@@ -18,20 +18,20 @@
       "title": "Messenger AI assistant",
       "dek": "A multi-tenant conversation assistant for Facebook Pages, built on n8n with Redis and PostgreSQL.",
       "problem": "People send several messages in a burst. Most webhook deliveries are receipts and echoes, not messages. And Meta retries the delivery if the acknowledgement is slow.",
-      "built": "Acknowledge first, and drop the noise cheaply. One database statement elects a “leader” per sender; the leader waits 25 seconds, then answers the whole burst in one reply. The reply comes from an AI agent with conversation memory. Scheduled follow-ups run with error logging: 2,680 delivered.",
+      "built": "Acknowledge first, and drop the noise cheaply. One database statement elects a “leader” per sender; the leader waits 25 seconds, then answers the whole burst in one reply. The reply comes from an AI agent with conversation memory. Scheduled follow-ups run with error logging: 20,781 delivered.",
       "stack": "n8n, Redis, PostgreSQL",
       "repo": "https://github.com/adrianaprofirei/Messenger-Chatbot",
       "note": "The public repository is a structure-only export and is not runnable.",
       "table": {
         "caption": "The system in numbers",
         "rows": [
-          ["Facebook Pages", "43"],
+          ["Facebook Pages", "98"],
           ["Languages", "3"],
-          ["Executions per hour, off-peak", "~8,200"],
+          ["Executions to date", "2.1 million+"],
           ["Executions per hour, peak", "14,100"],
-          ["People in conversation", "4,394"],
-          ["Messages", "46,822"],
-          ["Scheduled follow-ups delivered", "2,680"]
+          ["People in conversation", "22,305"],
+          ["Messages", "218,466"],
+          ["Scheduled follow-ups delivered", "20,781"]
         ]
       },
       "flow": {
