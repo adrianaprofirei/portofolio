@@ -3,11 +3,11 @@
     "name": "Adrian-Mihai Aprofirei",
     "title": "Adrian-Mihai Aprofirei · AI assistants and automation in production",
     "description": "Computer science graduate in Iași, Romania. I build AI assistants and automation pipelines that run in production: a Messenger assistant serving 43 Facebook Pages, an AI receptionist, and video pipelines.",
-    "url": "",
+    "url": "https://portofolio-chi-nine-50.vercel.app",
     "location": "Iași, Romania",
     "positioning": "I build AI assistants and automation pipelines that run in production.",
     "proofLabel": "Messenger AI assistant, in production",
-    "proof": "My Messenger assistant serves **43 Facebook Pages** from a single webhook and handles **14,100 executions an hour** at peak. It has held conversations with **4,394 people**, **46,822 messages** in all, and it runs on one server with **2 vCPU and 3.7 GiB** of memory."
+    "proof": "My Messenger assistant serves **43 Facebook Pages** from a single webhook and handles **14,100 executions an hour** at peak. It has held conversations with **4,394 people**, **46,822 messages** in all."
   },
 
   "cases": [
@@ -31,8 +31,7 @@
           ["Executions per hour, peak", "14,100"],
           ["People in conversation", "4,394"],
           ["Messages", "46,822"],
-          ["Scheduled follow-ups delivered", "2,680"],
-          ["Server", "2 vCPU, 3.7 GiB"]
+          ["Scheduled follow-ups delivered", "2,680"]
         ]
       },
       "flow": {
